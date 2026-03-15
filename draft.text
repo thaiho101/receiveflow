@@ -1,0 +1,162 @@
+<?php 
+session_start();
+// $servername = "localhost";
+// $username = "abc";
+// $password = "passwordissecret10829475";
+// $dbname = "receiveflow_local";
+
+// $conn = new mysqli($servername, $username, $password, $dbname);
+// if ($conn->connect_error) {
+//     die("connection failed: " . $conn->connect_error);
+// }
+// echo "Connect successfully";
+require_once './backend/db.php';
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReceiveFlow</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="./frontend/style.css">
+</head>
+<body>
+    <div id="header-nav">
+        <p style='font-size: 24px; padding-bottom: -20px;'>Metro Uniforms</p>
+
+    </div>
+        <hr>
+    <div id="receiving-nav">
+        <p id='receiving-title'>Receiving Flow</p>
+    </div>
+
+    <div id='order-scan-nav'>
+        <form action="" method="get" id="order-form">
+            <input type='text' placeholder='scan order number here' name='orderNumber' id='scan-box'>
+            <div class='space-10px'></div>
+        </form>
+        <button class='new-order-button button_style' onclick="window.location.href='/receiveflow?reload=' + new Date().getTime()"><i class='fa fa-refresh'></i> New Order</button>
+    </div>
+    <?php
+        // if ($_SERVER['REQUEST_METHOD'] == 'GET' && isset($_GET['orderNumber'])) {
+        //     $orderNumber = $_GET['orderNumber'];
+
+
+        //     $stmt_expectedItems = $conn->prepare("SELECT e.institution, e.item_type, e.upc, e.expected_qty, r.scanned_qty
+        //                             FROM expected_items e
+        //                             LEFT JOIN receiving_scans r ON e.order_number = r.order_number
+        //                             WHERE e.order_number = ?");
+        //     $stmt_expectedItems->bind_param('s', $orderNumber);
+        //     $stmt_expectedItems->execute();
+
+        //     $order_exist_expectedItems = $stmt_expectedItems->get_result();
+
+        //     $stmt_session_open = $conn->prepare("SELECT * FROM receiving_sessions WHERE order_number = ? ORDER BY started_at DESC LIMIT 1");
+        //     $stmt_session_open->bind_param('s', $orderNumber);
+        //     $stmt_session_open->execute();
+        //     $stmt_session_open_result = $stmt_session_open->get_result();
+        //     $data_session_row = $stmt_session_open_result->fetch_assoc();
+        //     if ($data_session_row['status'] == 'OPEN') {
+        //         $order_session_open = true;
+        //         $order_session_close = false;
+        //     } else if ($data_session_row['status'] == 'CLOSE') {
+        //         $order_session_open = false;
+        //         $order_session_close = true;
+        //     }
+        //     $session_not_exist = $stmt_session_open_result;
+
+        // }
+
+        // if ($order_exist_expectedItems->num_rows > 0 && 
+        // ($order_session_open == true || $session_not_exist->num_rows == 0)) {
+        //     $upcScan = "upc-scan-nav";
+        // } else {
+        //     $upcScan = "upc-scan-nav-hidden";
+        //     $blur_data = "blur_data";
+        // }
+    
+
+        // if ($order_exist_expectedItems->num_rows > 0 && $session_not_exist->num_rows == 0) {
+            // $stmt_session_add = $conn->prepare("INSERT INTO receiving_sessions (order_number, started_at, status) VALUES (?, NOW(), ?)");
+            // $stmt_session_add->bind_param('ss', $orderNumber, 'OPEN');
+            // $stmt_session_add->execute();
+            // echo "Session just added./SESSION OPENED";
+
+            // $stmt_audit = $conn->prepare("INSERT INTO receiving_audit_events (session_id, order_number, event_type) VALUES (?, ?, ?)");
+            // $stmt_audit->bind_param('iis', $data_session_row['session_id'], $orderNumber, 'SESSION_OPEN');
+            // $stmt_audit->execute();
+
+        // }
+    ?>
+    <?php require_once './backend/upc_scan_box.php';?>
+    <div id='upc-scan-nav' class='<?php echo $upcScan; ?>'>
+        <form action="" method='post' id='upc-form'>
+            <input type="text" placeholder='scan upc here' id='upc-scan-box' autofocus>
+        </form>
+    </div>
+    <div id='search-content-nav'>
+        <?php 
+        require_once './backend/order_content.php';
+            // if ($order_exist_expectedItems->num_rows > 0) {
+            //     echo "<table border='0'>";
+            //     echo "<tr><td id='institution' class='dataCenter'>Institution</td>
+            //             <td id='item-type' class='dataCenter'>Item Type</td>
+            //             <td id='upc' class='dataCenter'>Upc</td>
+            //             <td id='expected-qty' class='dataCenter'>Expected Qty</td>
+            //             <td id='scanned-qty' class='dataCenter'>Scanned Qty</td>
+            //             <td id='action' class='dataCenter'>Action</td> 
+            //             </tr>";
+
+            //     while ($dataRow = $order_exist_expectedItems->fetch_assoc()) {
+            //         if (!$dataRow['scanned_qty']) {
+            //             $scanQty = 0;
+            //         }
+            //         if ($dataRow['item_type'] == 'top') {
+            //             $itemType = 'Embroidery: Right Sleeve (Logo)';
+            //         } else if ($dataRow['item_type'] == 'lab' || $dataRow['item_type'] == 'jacket' || $dataRow['item_type'] == 'polo') {
+            //             $itemType = ' Embroidery: Left Chest (Personalization)';
+            //         } else {
+            //             $itemType = '';
+            //         }
+
+            //         $detailRow = ($itemType) ? "non-border-bottom" : "border-bottom";
+            //         echo "<tr class='$detailRow'><td class='dataCenter'>" . $dataRow['institution'] . 
+            //         "</td><td class='dataCenter blur_data'>" . $dataRow['item_type'] . 
+            //         "</td><td class='dataCenter'>" . $dataRow['upc'] . 
+            //         "</td><td class='dataCenter'>" . $dataRow['expected_qty'] . 
+            //         "</td><td class='dataCenter'>" . $scanQty . "</td>
+            //         <td class='dataCenter'><button class='submit-button'><i class='fa fa-plus'></i></button></td></tr>";
+            //         if ($itemType) {
+            //             echo "<tr class='border-bottom'><td></td>
+            //         <td colspan='2'>" . $itemType . "</td>
+            //         <td></td>
+            //         <td></td>
+            //         <td></td></tr>";
+            //         }
+            //     }
+            //     echo "</table>";
+            // } else {
+            //     if ($orderNumber === "") {
+            //         echo "<p style='color: rgb(218, 118, 3);'><i class='fa fa-barcode' style='color: black;'></i> Please scan an order number in the field above.</p>";
+            //     } else 
+            //         echo "<p style='color: red;'>The order number: $orderNumber does not exist.</p>";
+            // }
+        ?>
+    </div>
+
+    <div id='order-note'>
+        <p>Notes</p>
+        <textarea id='order-note-input' type="text"> </textarea>
+    </div>
+    <div id='order-audit'>
+        <p>History</p>
+        <div readonly id='order-audit-input' type="text"> 
+        <?php require_once './backend/audit_events.php';
+        ?>
+        </div>
+    </div>
+
+    <div id="footer">Designed by N.Ho</div>
+</body>
+</html>
