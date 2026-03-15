@@ -27,7 +27,7 @@ if ($demoMode) {
         if($is_note_old && $is_note_old['note_text'] === $_POST['notes']) {
             // If the note is the same, do nothing
             $stmt_audit_events->close();
-            header("Location: ../receiveflow/");
+            header("Location: /?orderNumber=" . urlencode($orderNumber));
             exit;
         }
 
@@ -45,7 +45,7 @@ if ($demoMode) {
         $stmt_session_add->close();
         $stmt_session_ID->close();
         // header("Location: ../receiveflow/?orderNumber=" . urlencode($orderNumber));
-        header("Location: ../receiveflow/");
+        header("Location: /?orderNumber=" . urlencode($orderNumber));
         exit;
     }
 }
