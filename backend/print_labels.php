@@ -136,7 +136,7 @@ while($row = $result->fetch_assoc())
 
 <div class="header">
     <div style='display: flex; justify-content: space-between; width: 92%;'>
-        <b>From: Metro Uniforms</b>
+        <b>From: [Your Company]</b>
         <b>To: Embroidery Company</b>
     </div>
 
