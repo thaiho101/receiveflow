@@ -17,7 +17,7 @@ if (isset($_POST['download']) || isset($_GET['download'])) {
     fputcsv($output, ['Date:', $date]);
     fputcsv($output, ['']);
     // fputcsv($output, ['Institution', 'Total Order', 'Right Sleeves', 'Left Chest']);
-    fputcsv($output, ['Institution', 'Total Order', 'Total Scrub Top', 'Total Jacket', 'Total Labcoat', 'Total Polo', 'Total Personalized',  'Total Right Sleeves', 'Total Left Chest']);
+    fputcsv($output, ['Institution', 'Total Order', 'Total Item', 'Total Scrub Top', 'Total Jacket', 'Total Labcoat', 'Total Polo', 'Total Personalized',  'Total Right Sleeves', 'Total Left Chest']);
 
     $stmt_sum = $conn->prepare("SELECT i.institution,
                                     COUNT(DISTINCT s.order_number) AS total_orders,
@@ -55,7 +55,7 @@ if (isset($_POST['download']) || isset($_GET['download'])) {
         ];
         $row['total_items'] = $row['total_top'] + $row['total_jacket'] + $row['total_labcoat'] + $row['total_polo'];
         $rows[] = $row;
-        fputcsv($output, [$data_sum['institution'], $data_sum['total_orders'], $data_sum['total_top'], $data_sum['total_jacket'], $data_sum['total_labcoat'], $data_sum['total_polo'], $data_sum['total_personalized'], 
+        fputcsv($output, [$data_sum['institution'], $data_sum['total_orders'], $row['total_items'], $data_sum['total_top'], $data_sum['total_jacket'], $data_sum['total_labcoat'], $data_sum['total_polo'], $data_sum['total_personalized'], 
                         '=' . 'C' . $num, '=sum(D' . $num . ':G' . $num . ')']);
         // $letter++;
         $num++;
