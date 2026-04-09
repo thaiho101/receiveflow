@@ -19,7 +19,7 @@ function drawInstitutionChart() {
     legend: { position: "top" },
       colors: [
     "#abacae", // Total Orders (blue)
-    "#ff0505",  // Total Items (green)
+    "#722cdc",  // Total Items (purple)
     ],
     chartArea: {
       left: 110
